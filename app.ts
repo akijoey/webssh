@@ -3,7 +3,7 @@ import http from 'http'
 import events from 'events'
 import staticMiddleware from 'koa-static'
 import { Server as Socket } from 'socket.io'
-import { Client, ConnectConfig, PseudoTtyOptions } from 'ssh2'
+import { Client, ConnectConfig, PseudoTtyOptions, ClientChannel } from 'ssh2'
 import chalk from 'chalk'
 
 const info = (host: string, message: string, status: boolean): string => {
@@ -13,10 +13,11 @@ const info = (host: string, message: string, status: boolean): string => {
 }
 
 interface Config extends ConnectConfig {
-  id: string | symbol
+  id: string
 }
 
 const connect = (socket: events.EventEmitter): void => {
+  const streams: Map<string, ClientChannel> = new Map()
   const window: PseudoTtyOptions = {
     term: 'xterm-256color'
   }
@@ -24,6 +25,11 @@ const connect = (socket: events.EventEmitter): void => {
     .on('initsize', (cols, rows) => {
       window.cols = cols
       window.rows = rows
+    })
+    .on('resize', ({ rows, cols, height, width }) => {
+      streams.forEach(stream => {
+        stream.setWindow(rows, cols, height, width)
+      })
     })
     .on('connected', (config: Config) => {
       const { id, host } = config
@@ -37,13 +43,10 @@ const connect = (socket: events.EventEmitter): void => {
               ssh.end()
               return
             }
-            socket
-              .on('resize', ({ rows, cols, height, width }) => {
-                stream.setWindow(rows, cols, height, width)
-              })
-              .on(id, data => {
-                stream.write(data)
-              })
+            streams.set(id, stream)
+            socket.on(id, data => {
+              stream.write(data)
+            })
             stream
               .on('data', (data: any) => {
                 socket.emit(id, data.toString('utf8'))
@@ -54,6 +57,7 @@ const connect = (socket: events.EventEmitter): void => {
         .on('close', () => {
           socket.emit(id, info(host!, 'Disconnected', true))
           socket.removeAllListeners(id)
+          streams.delete(id)
         })
         .on('error', err => {
           socket.emit(id, info(host!, err.message, false))
@@ -74,7 +78,7 @@ function serve(): void {
   })
   io.on('connection', connect)
   // server listen
-  const host = '127.0.0.1',
+  const host = '0.0.0.0',
     port = 8022
   const url = chalk.magenta.underline(`http://${host}:${port}`)
   server.listen(port, host, () => {

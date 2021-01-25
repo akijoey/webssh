@@ -12,8 +12,8 @@ interface Props extends React.SVGProps<SVGSVGElement> {
 
 const Icon: React.FC<Props> = props => {
   const { name, className, ...restProps } = props
-  const path = `icon/${name}.svg`
-  const module = require(`@svgr/webpack?-svgo,+titleProp,+ref!@/assets/${path}`)
+  const file = `${name}.svg`
+  const module = require(`@svgr/webpack?-svgo,+titleProp,+ref!@/assets/icons/${file}`)
   const Svg = module.ReactComponent
   return (
     <Svg

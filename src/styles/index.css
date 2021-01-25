@@ -24,3 +24,8 @@ code {
   color: #409eff;
   background: transparent;
 }
+
+@font-face {
+  font-family: 'Cascadia Code';
+  src: url('@/assets/fonts/CascadiaCode.woff2') format('woff2');
+}

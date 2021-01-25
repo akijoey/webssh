@@ -5,8 +5,6 @@ const options: ITerminalOptions = {
   cursorStyle: 'bar',
   fontSize: 17.3,
   fontFamily: 'Cascadia Code',
-  fontWeight: 'normal',
-  fontWeightBold: 'bold',
   theme: {
     background: '#000000',
     foreground: '#CCCCCC',

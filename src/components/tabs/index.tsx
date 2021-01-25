@@ -76,7 +76,6 @@ const Tabs: React.FC<
       <div className={classes(prefix, className)} {...restProps}>
         {React.Children.map<JSX.Element, any>(children, (element, index) => {
           return React.cloneElement(element, {
-            // style: index !== active ? { display: 'none' } : undefined,
             name: undefined,
             closable: undefined,
             hidden: index !== (activeKey ?? active)

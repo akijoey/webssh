@@ -8,18 +8,22 @@ import Tabs, { Tab } from '@/components/tabs'
 import './index.scss'
 
 let count = 0
+const callbacks: any[] = []
 
 const Home = (): ReactElement => {
   const [visible, setVisible] = useState(false)
   const [tabs, setTabs] = useState([] as any[])
   const [active, setActive] = useState(0)
+  const handleResize = (callback: Function): void => {
+    callbacks.push(callback)
+  }
   const handleConfirm = (config: any): void => {
     setVisible(false)
     const newTabs = [...tabs]
     const id = (count++).toString()
     newTabs.push({
       name: 'Terminal ' + id,
-      content: <Terminal id={id} config={config} />
+      content: <Terminal id={id} config={config} onResize={handleResize} />
     })
     setTabs(newTabs)
     setActive(tabs.length)
@@ -32,15 +36,17 @@ const Home = (): ReactElement => {
       newTabs.splice(index, 1)
       setTabs(newTabs)
       setActive(index > 0 ? index - 1 : 0)
+      callbacks.splice(index, 1)
     }
+  }
+  const handleChange = async (index: number): Promise<void> => {
+    await setActive(index)
+    callbacks[index]()
+    window.onresize = callbacks[index]
   }
   return (
     <Fragment>
-      <Tabs
-        activeKey={active}
-        onEdit={handleEdit}
-        onChange={(index: number) => setActive(index)}
-      >
+      <Tabs activeKey={active} onEdit={handleEdit} onChange={handleChange}>
         {tabs.map((tab: any, index: number) => (
           <Tab name={tab.name} key={index} closable>
             {tab.content}

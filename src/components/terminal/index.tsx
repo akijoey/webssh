@@ -8,15 +8,16 @@ import options from '@/utils/options'
 import 'xterm/css/xterm.css'
 import './index.scss'
 
-const socket = io('http://localhost:8022')
-
 interface Props {
   id: string
   config: {}
+  onResize?: any
 }
 
+const socket = io('http://localhost:8022')
+
 const Terminal = (props: Props): ReactElement => {
-  const { id, config } = props
+  const { id, config, onResize } = props
   const tid = `terminal-${id}`
   useEffect(() => {
     const element = document.getElementById(tid)!
@@ -27,7 +28,7 @@ const Terminal = (props: Props): ReactElement => {
     term.loadAddon(fitAddon)
     fitAddon.fit()
     socket.emit('initsize', term.cols, term.rows)
-    window.addEventListener('resize', () => {
+    const resize = (): void => {
       fitAddon.fit()
       socket.emit('resize', {
         cols: term.cols,
@@ -35,7 +36,11 @@ const Terminal = (props: Props): ReactElement => {
         height: element.clientHeight,
         width: element.clientWidth
       })
-    })
+    }
+    window.onresize = resize
+    if (onResize !== undefined) {
+      onResize(resize)
+    }
     // connect ssh
     socket.emit('connected', { id, ...config })
     socket.on(id, (data: string) => {
