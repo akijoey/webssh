@@ -12,8 +12,8 @@ code {
     monospace;
 }
 
-#root {
-  height: 100%;
+.app {
+  height: 100vh;
 }
 
 *::-webkit-scrollbar {

@@ -3,6 +3,7 @@
     /* Basic Options */
     "jsx": "react",
     "isolatedModules": true,
+    "allowJs": true,
 
     /* Strict Type-Checking Options */
     "strict": true,

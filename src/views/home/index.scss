@@ -1,0 +1,31 @@
+.rc-menus {
+  padding-top: 5px;
+  background-color: #333;
+  &::before {
+    border-color: transparent;
+  }
+  > .rc-menu {
+    color: #fff;
+    background-color: #333;
+    border-color: transparent;
+    border-radius: 6px 6px 0 0;
+    &:first-of-type {
+      margin-left: 5px;
+    }
+    > svg:hover {
+      color: #fff;
+    }
+    &-active {
+      background-color: #000;
+    }
+  }
+}
+.rc-tabs {
+  background-color: #000;
+}
+.rc-mask {
+  z-index: 10;
+}
+.rc-dialog {
+  z-index: 20;
+}

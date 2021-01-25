@@ -1,11 +1,11 @@
 import React, { ReactElement } from 'react'
 
-import Logo from '@/components/logo'
+import Home from '@/views/home'
 
 const App = (): ReactElement => {
   return (
     <div className="app">
-      <Logo />
+      <Home />
     </div>
   )
 }
