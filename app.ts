@@ -78,9 +78,9 @@ function serve(): void {
   })
   io.on('connection', connect)
   // server listen
-  const host = '0.0.0.0',
-    port = 8022
-  const url = chalk.magenta.underline(`http://${host}:${port}`)
+  const host = process.env.HOST ?? '0.0.0.0'
+  const port = Number(process.env.PORT ?? 8022)
+  const url = chalk.blueBright.underline(`http://${host}:${port}`)
   server.listen(port, host, () => {
     console.log(`Server is running at ${url}`)
   })

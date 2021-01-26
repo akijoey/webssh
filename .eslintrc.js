@@ -13,7 +13,6 @@ module.exports = {
     tsconfigRootDir: __dirname
   },
   rules: {
-    'one-var': 0,
     '@typescript-eslint/no-non-null-assertion': 0,
     '@typescript-eslint/no-var-requires': 0
   }
