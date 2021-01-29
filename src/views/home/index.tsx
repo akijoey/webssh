@@ -1,9 +1,8 @@
 import React, { ReactElement, useState, Fragment } from 'react'
+import { Dialog, Tabs, Tab } from '@akijoey/react-components'
 
 import Terminal from '@/components/terminal'
-import Dialog from '@/components/dialog'
 import Form from '@/components/form'
-import Tabs, { Tab } from '@/components/tabs'
 
 import './index.scss'
 

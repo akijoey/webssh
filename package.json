@@ -15,6 +15,7 @@
   "author": "AkiJoey <akijoey@akijoey.com> (https://akijoey.com)",
   "license": "MIT",
   "dependencies": {
+    "@akijoey/react-components": "latest",
     "@akijoey/react-scripts": "latest",
     "@types/koa": "^2.11.6",
     "@types/koa-static": "^4.0.1",

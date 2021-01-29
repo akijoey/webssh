@@ -14,6 +14,7 @@ const info = (host: string, message: string, status: boolean): string => {
 
 interface Config extends ConnectConfig {
   id: string
+  host: string
 }
 
 const connect = (socket: events.EventEmitter): void => {
@@ -36,10 +37,10 @@ const connect = (socket: events.EventEmitter): void => {
       const ssh = new Client()
       ssh
         .on('ready', () => {
-          socket.emit(id, info(host!, 'Connected', true))
+          socket.emit(id, info(host, 'Connected', true))
           ssh.shell(window, (err, stream) => {
             if (err !== undefined) {
-              socket.emit(id, info(host!, err.message, false))
+              socket.emit(id, info(host, err.message, false))
               ssh.end()
               return
             }
@@ -55,12 +56,12 @@ const connect = (socket: events.EventEmitter): void => {
           })
         })
         .on('close', () => {
-          socket.emit(id, info(host!, 'Disconnected', true))
+          socket.emit(id, info(host, 'Disconnected', true))
           socket.removeAllListeners(id)
           streams.delete(id)
         })
         .on('error', err => {
-          socket.emit(id, info(host!, err.message, false))
+          socket.emit(id, info(host, err.message, false))
         })
         .connect(config)
     })

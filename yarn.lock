@@ -18,6 +18,14 @@
   resolved "https://registry.npm.taobao.org/@akijoey/prettier-config/download/@akijoey/prettier-config-0.0.6.tgz#809e815d99479dd248d51f1f1414143f7319a61d"
   integrity sha1-gJ6BXZlHndJI1R8fFBQUP3MZph0=
 
+"@akijoey/react-components@^0.0.5":
+  version "0.0.5"
+  resolved "https://registry.npm.taobao.org/@akijoey/react-components/download/@akijoey/react-components-0.0.5.tgz?cache=0&sync_timestamp=1611934099108&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40akijoey%2Freact-components%2Fdownload%2F%40akijoey%2Freact-components-0.0.5.tgz#5cae5243987dbafa0bc6236981ca500acb04f63f"
+  integrity sha1-XK5SQ5h9uvoLxiNpgcpQCssE9j8=
+  dependencies:
+    "@types/classnames" "^2.2.11"
+    classnames "^2.2.6"
+
 "@akijoey/react-scripts@latest":
   version "0.0.5"
   resolved "https://registry.npm.taobao.org/@akijoey/react-scripts/download/@akijoey/react-scripts-0.0.5.tgz#a745ef128543295c629e56298809d122cef7b3ae"
@@ -1344,6 +1352,11 @@
     "@types/connect" "*"
     "@types/node" "*"
 
+"@types/classnames@^2.2.11":
+  version "2.2.11"
+  resolved "https://registry.npm.taobao.org/@types/classnames/download/@types/classnames-2.2.11.tgz#2521cc86f69d15c5b90664e4829d84566052c1cf"
+  integrity sha1-JSHMhvadFcW5BmTkgp2EVmBSwc8=
+
 "@types/component-emitter@^1.2.10":
   version "1.2.10"
   resolved "https://registry.npm.taobao.org/@types/component-emitter/download/@types/component-emitter-1.2.10.tgz#ef5b1589b9f16544642e473db5ea5639107ef3ea"
@@ -2602,6 +2615,11 @@ class-utils@^0.3.5:
     define-property "^0.2.5"
     isobject "^3.0.0"
     static-extend "^0.1.1"
+
+classnames@^2.2.6:
+  version "2.2.6"
+  resolved "https://registry.npm.taobao.org/classnames/download/classnames-2.2.6.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2Fclassnames%2Fdownload%2Fclassnames-2.2.6.tgz#43935bffdd291f326dad0a205309b38d00f650ce"
+  integrity sha1-Q5Nb/90pHzJtrQogUwmzjQD2UM4=
 
 clean-css@^4.2.3:
   version "4.2.3"

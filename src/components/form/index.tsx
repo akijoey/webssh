@@ -1,7 +1,5 @@
 import React, { ReactElement, useReducer } from 'react'
-
-import Button from '@/components/button'
-import Input from '@/components/input'
+import { Button, Input } from '@akijoey/react-components'
 
 import './index.scss'
 
