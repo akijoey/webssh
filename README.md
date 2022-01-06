@@ -28,4 +28,4 @@ A web based ssh client.
 [MIT][license-url] © AkiJoey
 
 [license-image]: https://img.shields.io/github/license/akijoey/webssh
-[license-url]: https://github.com/akijoey/webssh/blob/master/LICENSE
+[license-url]: https://github.com/akijoey/webssh/blob/main/LICENSE

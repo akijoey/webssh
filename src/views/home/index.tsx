@@ -1,4 +1,4 @@
-import React, { ReactElement, useState, Fragment } from 'react'
+import React, { ReactElement, useState } from 'react'
 import { Dialog, Tabs, Tab } from '@akijoey/react-components'
 
 import Terminal from '@/components/terminal'
@@ -44,7 +44,7 @@ const Home = (): ReactElement => {
     window.onresize = callbacks[index]
   }
   return (
-    <Fragment>
+    <>
       <Tabs activeKey={active} onEdit={handleEdit} onChange={handleChange}>
         {tabs.map((tab: any, index: number) => (
           <Tab name={tab.name} key={index} closable>
@@ -59,7 +59,7 @@ const Home = (): ReactElement => {
       >
         <Form onConfirm={handleConfirm} />
       </Dialog>
-    </Fragment>
+    </>
   )
 }
 
