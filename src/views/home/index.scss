@@ -8,26 +8,67 @@
     }
 
     > .rc-menu {
-      color: #fff;
+      height: 30px;
+      color: #c9d1d9;
       background-color: #333;
       border-color: transparent;
+      border: none;
       border-radius: 6px 6px 0 0;
+      font-size: 14px;
+      font-weight: bold;
 
       &:first-of-type {
         margin-left: 5px;
       }
 
-      > svg:hover {
-        color: #fff;
+      &:hover {
+        color: #f0f6fc;
+      }
+
+      > svg {
+        width: 1em;
+        height: 1em;
+
+        &:hover {
+          color: #fff;
+        }
+      }
+
+      &::before,
+      &::after {
+        position: absolute;
+        bottom: 0;
+        z-index: 1;
+        width: 10px;
+        height: 10px;
+        content: '';
+        border-radius: 100%;
+        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
+      }
+      &::before {
+        clip-path: inset(50% -10px 0 50%);
+        left: -10px;
+      }
+      &::after {
+        clip-path: inset(50% 50% 0 -10px);
+        right: -10px;
       }
 
       &-active {
         background-color: #000;
+        color: #f0f6fc;
+        &::before {
+          box-shadow: 0 0 0 5px #000;
+        }
+        &::after {
+          box-shadow: 0 0 0 5px #000;
+        }
       }
     }
   }
 
   .rc-tabs {
+    height: calc(100% - 35px);
     background-color: #000;
   }
 
@@ -37,5 +78,7 @@
 
   ~ .rc-dialog {
     z-index: 20;
+    background-color: #333;
+    color: #f0f6fc;
   }
 }

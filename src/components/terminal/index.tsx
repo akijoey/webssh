@@ -24,11 +24,12 @@ const Terminal = (props: Props): ReactElement => {
     if (element !== null) {
       const term = new Term(options)
       term.open(element)
+
       // init size
       const fitAddon = new FitAddon()
       term.loadAddon(fitAddon)
       fitAddon.fit()
-      socket.emit('initsize', term.cols, term.rows)
+
       const resize = (): void => {
         fitAddon.fit()
         socket.emit('resize', {
@@ -42,14 +43,20 @@ const Terminal = (props: Props): ReactElement => {
       if (onResize !== undefined) {
         onResize(resize)
       }
+
       // connect ssh
-      socket.emit('connected', { id, ...config })
-      socket.on(id, (data: string) => {
-        term.write(data)
-      })
       term.onData(data => {
         socket.emit(id, data)
       })
+      socket
+        .on(id, (data: string) => {
+          term.write(data)
+        })
+        .on('connected', () => {
+          const resize = new Event('resize')
+          window.dispatchEvent(resize)
+        })
+        .emit('shell', { id, ...config })
     }
   }, [])
   return <div id={tid} />

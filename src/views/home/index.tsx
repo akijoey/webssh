@@ -16,6 +16,7 @@ const Home = (): ReactElement => {
   const handleResize = (callback: Function): void => {
     callbacks.push(callback)
   }
+
   const handleConfirm = (config: any): void => {
     setVisible(false)
     const newTabs = [...tabs]
@@ -27,6 +28,7 @@ const Home = (): ReactElement => {
     setTabs(newTabs)
     setActive(tabs.length)
   }
+
   const handleEdit = (index: number, action: string): void => {
     if (action === 'add') {
       setVisible(true)
@@ -38,11 +40,13 @@ const Home = (): ReactElement => {
       callbacks.splice(index, 1)
     }
   }
+
   const handleChange = async (index: number): Promise<void> => {
     await setActive(index)
     callbacks[index]()
     window.onresize = callbacks[index]
   }
+
   return (
     <>
       <Tabs activeKey={active} onEdit={handleEdit} onChange={handleChange}>

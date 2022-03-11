@@ -3,8 +3,9 @@ import { ITerminalOptions } from 'xterm'
 const options: ITerminalOptions = {
   cursorBlink: true,
   cursorStyle: 'bar',
-  fontSize: 17.3,
+  fontSize: 15,
   fontFamily: 'Cascadia Code',
+  letterSpacing: 1.1,
   theme: {
     background: '#000000',
     foreground: '#CCCCCC',
