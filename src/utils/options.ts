@@ -5,7 +5,9 @@ const options: ITerminalOptions = {
   cursorStyle: 'bar',
   fontSize: 15,
   fontFamily: 'Cascadia Code',
-  letterSpacing: 1.1,
+  lineHeight: 1.1,
+  letterSpacing: 1,
+  convertEol: true,
   theme: {
     background: '#000000',
     foreground: '#CCCCCC',

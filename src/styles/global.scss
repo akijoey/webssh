@@ -5,10 +5,5 @@
 }
 
 *::-webkit-scrollbar {
-  width: 0;
-}
-
-*::selection {
-  color: #409eff;
-  background: transparent;
+  display: none;
 }

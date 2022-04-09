@@ -1,0 +1,86 @@
+.login {
+  width: 25rem;
+  max-width: 100%;
+
+  .config {
+    margin-bottom: 0.75rem;
+  }
+
+  label:first-child {
+    display: block;
+    cursor: default;
+  }
+
+  span {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  input {
+    &[type='radio' i],
+    &[type='file' i] {
+      background-color: #0006;
+    }
+
+    &[type='file' i]:hover {
+      border-color: #333;
+    }
+
+    &:not(:hover):not(:focus-visible) {
+      &[type='file' i] {
+        border-color: #333;
+
+        &::file-selector-button {
+          background-color: #666;
+        }
+      }
+    }
+  }
+
+  .radios {
+    display: flex;
+    align-items: center;
+    margin: -0.25rem 0 0.75rem;
+
+    label {
+      font-size: 0.875rem;
+    }
+
+    input[type='radio' i] {
+      margin: 0 0.5rem 0 0;
+
+      &:not(:first-child) {
+        margin-left: 1.5rem;
+      }
+    }
+  }
+
+  .rc-input {
+    border: thin solid #333;
+    background-color: #0006;
+    input {
+      color: #c9d1d9;
+    }
+  }
+
+  .rc-button {
+    width: 100%;
+    margin: 0.5rem 0 0.25rem 0;
+    font-weight: bold;
+  }
+
+  .socket {
+    display: flex;
+    justify-content: space-between;
+    line-height: 1.8rem;
+
+    > div:first-child {
+      width: 65%;
+    }
+
+    > div:last-child {
+      width: 30%;
+    }
+  }
+}

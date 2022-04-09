@@ -1,67 +1,105 @@
-import React, { ReactElement, useState } from 'react'
+import React, { ReactElement, useState, useEffect } from 'react'
 import { Dialog, Tabs, Tab } from '@akijoey/react-components'
 
-import Terminal from '@/components/terminal'
-import Form from '@/components/form'
+import Terminal, { TermInstance } from '@/components/terminal'
+import Setting from '@/components/setting'
+import Login from '@/components/login'
+import { generateID } from '@/utils/identity'
+
+import options from '@/utils/options'
 
 import './index.scss'
 
-let count = 0
-const callbacks: any[] = []
+const instances = new Map<string, TermInstance>()
 
 const Home = (): ReactElement => {
+  const handleInit = (instance: TermInstance): void => {
+    instances.set(instance.id, instance)
+  }
+
   const [visible, setVisible] = useState(false)
   const [tabs, setTabs] = useState([] as any[])
   const [active, setActive] = useState(0)
-  const handleResize = (callback: Function): void => {
-    callbacks.push(callback)
-  }
 
-  const handleConfirm = (config: any): void => {
-    setVisible(false)
-    const newTabs = [...tabs]
-    const id = (count++).toString()
-    newTabs.push({
-      name: 'Terminal ' + id,
-      content: <Terminal id={id} config={config} onResize={handleResize} />
-    })
-    setTabs(newTabs)
-    setActive(tabs.length)
-  }
+  useEffect(() => {
+    const config = { id: 'motd' }
+    const content = <Terminal config={config} onInit={handleInit} motd />
+    setTabs([{ ...config, name: 'webssh', content }])
+  }, [])
+
+  useEffect(() => {
+    for (const [id] of instances) {
+      if (!tabs.find(tab => tab.id === id)) {
+        instances.delete(id)
+      }
+    }
+    const key = tabs[active]?.id
+    if (key !== undefined) {
+      const { resize } = instances.get(key)!
+      window.addEventListener('resize', resize)
+      window.dispatchEvent(new Event('resize'))
+    }
+    return () => {
+      if (key !== undefined) {
+        const { resize } = instances.get(key)!
+        window.removeEventListener('resize', resize)
+      }
+    }
+  }, [active, tabs])
 
   const handleEdit = (index: number, action: string): void => {
     if (action === 'add') {
       setVisible(true)
     } else if (action === 'remove') {
-      const newTabs = [...tabs]
-      newTabs.splice(index, 1)
-      setTabs(newTabs)
+      setTabs(tabs.filter(tab => tab.id !== tabs[index].id))
       setActive(index > 0 ? index - 1 : 0)
-      callbacks.splice(index, 1)
     }
   }
 
-  const handleChange = async (index: number): Promise<void> => {
-    await setActive(index)
-    callbacks[index]()
-    window.onresize = callbacks[index]
+  const handleConfirm = (config: any): void => {
+    const { host, username } = config
+    config.id = generateID()
+    setVisible(false)
+    setTabs(
+      tabs.concat({
+        id: config.id,
+        name: `${username}@${host}`,
+        content: <Terminal config={config} onInit={handleInit} />
+      })
+    )
+    setActive(tabs.length)
+  }
+
+  const handleChange = (changedOptions: any): void => {
+    Object.assign(options, changedOptions)
+    instances.forEach(instance => {
+      Object.keys(changedOptions).forEach(key => {
+        instance.term.setOption(key, changedOptions[key])
+      })
+    })
+    window.dispatchEvent(new Event('resize'))
   }
 
   return (
     <>
-      <Tabs activeKey={active} onEdit={handleEdit} onChange={handleChange}>
-        {tabs.map((tab: any, index: number) => (
-          <Tab name={tab.name} key={index} closable>
+      <Setting onChange={handleChange} />
+      <Tabs
+        activeKey={active}
+        onEdit={handleEdit}
+        onChange={(index: number) => setActive(index)}
+      >
+        {tabs.map((tab: any) => (
+          <Tab name={tab.name} key={tab.id} closable>
             {tab.content}
           </Tab>
         ))}
       </Tabs>
       <Dialog
         visible={visible}
-        title="Create Connection"
+        title="Connection"
         onClose={() => setVisible(false)}
       >
-        <Form onConfirm={handleConfirm} />
+        <Login onConfirm={handleConfirm} />
       </Dialog>
     </>
   )

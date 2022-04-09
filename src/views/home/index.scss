@@ -1,74 +1,110 @@
+@use 'sass:math';
+
+@mixin round($radius: 0.8rem, $color: #000) {
+  $spread: math.div($radius, 2);
+  &::before,
+  &::after {
+    position: absolute;
+    bottom: 0;
+    z-index: 1;
+    width: $radius;
+    height: $radius;
+    content: '';
+    border-radius: 100%;
+  }
+  &::before {
+    left: -$radius;
+    clip-path: inset(50% $radius * -1 0 50%);
+    box-shadow: 0 0 0 $spread $color;
+  }
+  &::after {
+    right: -$radius;
+    clip-path: inset(50% 50% 0 $radius * -1);
+    box-shadow: 0 0 0 $spread $color;
+  }
+}
+
 #root {
+  .app {
+    background-color: #333;
+  }
+
   .rc-menus {
-    padding-top: 5px;
+    width: calc(100vw - 3rem);
+    padding-top: 0.3rem;
     background-color: #333;
 
     &::before {
-      border-color: transparent;
+      display: none;
     }
 
     > .rc-menu {
-      height: 30px;
-      color: #c9d1d9;
       background-color: #333;
-      border-color: transparent;
       border: none;
-      border-radius: 6px 6px 0 0;
-      font-size: 14px;
-      font-weight: bold;
+      border-radius: 0.5rem 0.5rem 0 0;
+      color: #bfbfbf;
+      font-size: 0.875rem;
+      transition: none;
 
       &:first-of-type {
-        margin-left: 5px;
+        margin-left: 0.3rem;
+      }
+      &:last-of-type {
+        flex-shrink: 0;
+        padding: 0 0.6rem;
+      }
+      &:not(:last-of-type) {
+        margin-right: 0;
+      }
+
+      @mixin separator {
+        position: absolute;
+        content: '|';
+        color: #888;
+        line-height: 1.25rem;
+      }
+      &:not(:first-of-type) > span::before {
+        @include separator;
+        left: -0.3rem;
+      }
+      &:nth-last-of-type(2) > span::after {
+        @include separator;
+        right: 0;
+      }
+
+      &-active:not(:last-of-type) {
+        @include round;
+        z-index: 1;
+        background-color: #000;
+        color: #f0f6fc;
+        > span {
+          &::before,
+          &::after {
+            content: '';
+          }
+        }
+      }
+
+      > span {
+        margin-right: 0.75rem;
+        + svg {
+          width: 0.7em;
+          height: 0.7em;
+          color: #bfbfbf;
+          &:hover {
+            color: #ff4d4f;
+          }
+        }
       }
 
       &:hover {
         color: #f0f6fc;
       }
-
-      > svg {
-        width: 1em;
-        height: 1em;
-
-        &:hover {
-          color: #fff;
-        }
-      }
-
-      &::before,
-      &::after {
-        position: absolute;
-        bottom: 0;
-        z-index: 1;
-        width: 10px;
-        height: 10px;
-        content: '';
-        border-radius: 100%;
-        transition: all 0.3s cubic-bezier(0.645, 0.045, 0.355, 1);
-      }
-      &::before {
-        clip-path: inset(50% -10px 0 50%);
-        left: -10px;
-      }
-      &::after {
-        clip-path: inset(50% 50% 0 -10px);
-        right: -10px;
-      }
-
-      &-active {
-        background-color: #000;
-        color: #f0f6fc;
-        &::before {
-          box-shadow: 0 0 0 5px #000;
-        }
-        &::after {
-          box-shadow: 0 0 0 5px #000;
-        }
-      }
     }
   }
 
   .rc-tabs {
-    height: calc(100% - 35px);
+    height: calc(100% - 2.3rem);
     background-color: #000;
   }
 
@@ -78,7 +114,8 @@
 
   ~ .rc-dialog {
     z-index: 20;
+    border-radius: 0.4rem;
     background-color: #333;
-    color: #f0f6fc;
+    color: #c9d1d9;
   }
 }

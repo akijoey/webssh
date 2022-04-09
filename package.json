@@ -2,6 +2,9 @@
   "name": "webssh",
   "version": "1.0.0",
   "description": "A web based ssh client.",
+  "repository": "github:akijoey/webssh",
+  "homepage": "https://github.com/akijoey/webssh#readme",
+  "bugs": "https://github.com/akijoey/webssh/issues",
   "author": "AkiJoey <akijoey@akijoey.com> (https://akijoey.com)",
   "license": "MIT",
   "private": true,
@@ -17,12 +20,15 @@
   "dependencies": {
     "@akijoey/react-components": "latest",
     "@types/koa": "^2.11.6",
+    "@types/koa-router": "^7.4.4",
     "@types/koa-static": "^4.0.1",
     "@types/react": "^17.0.0",
     "@types/react-dom": "^17.0.0",
     "@types/ssh2": "^0.5.46",
+    "koa-router": "^10.1.1",
     "koa-static": "^5.0.0",
-    "mapleaf": "^1.0.0",
+    "lognote": "^1.0.5",
+    "mapleaf": "^1.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "socket.io": "^3.0.5",
@@ -30,7 +36,9 @@
     "ssh2": "^0.8.9",
     "ts-node": "^9.1.1",
     "xterm": "^4.18.0",
-    "xterm-addon-fit": "^0.5.0"
+    "xterm-addon-fit": "^0.5.0",
+    "xterm-addon-search": "^0.8.2",
+    "xterm-addon-web-links": "^0.5.1"
   },
   "devDependencies": {
     "@akijoey/devkit": "latest",

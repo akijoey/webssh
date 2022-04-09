@@ -1,0 +1,57 @@
+.options {
+  width: 25rem;
+  max-width: 100%;
+
+  .option {
+    margin-bottom: 0.75rem;
+  }
+
+  label:first-child {
+    display: block;
+    cursor: default;
+  }
+
+  span {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-size: 0.75rem;
+  }
+
+  input {
+    background-color: #0006;
+
+    &:not(:hover):not(:focus-visible) {
+      &:not([type='radio' i]):not([type='checkbox' i]) {
+        border-color: #333;
+      }
+    }
+
+    &[role='switch' i] {
+      font-size: 1.2rem;
+    }
+  }
+
+  .radios {
+    display: flex;
+    align-items: center;
+    margin: -0.25rem 0 0.75rem;
+
+    label {
+      font-size: 0.875rem;
+    }
+
+    input[type='radio' i] {
+      margin: 0 0.5rem 0 0;
+
+      &:not(:first-child) {
+        margin-left: 1.5rem;
+      }
+    }
+  }
+
+  .rc-button {
+    width: 100%;
+    margin: 0.5rem 0 0.25rem 0;
+    font-weight: bold;
+  }
+}

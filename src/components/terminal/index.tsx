@@ -1,65 +1,101 @@
 import React, { ReactElement, useEffect } from 'react'
 import { Terminal as Term } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
+import { SearchAddon } from 'xterm-addon-search'
+import { WebLinksAddon } from 'xterm-addon-web-links'
 import { io } from 'socket.io-client'
 
 import options from '@/utils/options'
+import { baseURL, fetchMotd } from '@/utils/request'
 
 import 'xterm/css/xterm.css'
 import './index.scss'
 
-interface Props {
+export interface TermInstance {
   id: string
-  config: {}
-  onResize?: any
+  term: Term
+  resize: any
 }
 
-const socket = io('http://localhost:8022')
+interface Props {
+  motd?: boolean
+  config: { id: string }
+  onInit: (instance: TermInstance) => void
+}
+
+const socket = io(baseURL)
+socket.on('connected', () => {
+  window.dispatchEvent(new Event('resize'))
+})
 
 const Terminal = (props: Props): ReactElement => {
-  const { id, config, onResize } = props
+  const { id } = props.config
   const tid = `terminal-${id}`
   useEffect(() => {
     const element = document.getElementById(tid)
     if (element !== null) {
       const term = new Term(options)
-      term.open(element)
-
-      // init size
       const fitAddon = new FitAddon()
+      const searchAddon = new SearchAddon()
+      const webLinkAddon = new WebLinksAddon()
       term.loadAddon(fitAddon)
+      term.loadAddon(searchAddon)
+      term.loadAddon(webLinkAddon)
+      term.open(element)
       fitAddon.fit()
 
+      // resize listener
       const resize = (): void => {
         fitAddon.fit()
-        socket.emit('resize', {
-          cols: term.cols,
-          rows: term.rows,
-          height: element.clientHeight,
-          width: element.clientWidth
-        })
+        !props.motd &&
+          socket.emit('resize', {
+            cols: term.cols,
+            rows: term.rows,
+            height: element.clientHeight,
+            width: element.clientWidth
+          })
       }
-      window.onresize = resize
-      if (onResize !== undefined) {
-        onResize(resize)
+      props.onInit({ id, term, resize })
+
+      // contextmenu listener
+      const contextmenu = (event: MouseEvent): void => {
+        event.preventDefault()
+        const { clipboard } = navigator
+        if (term.hasSelection()) {
+          clipboard.writeText(term.getSelection())
+          term.select(0, 0, 0)
+        } else if (!props.motd) {
+          clipboard.readText().then(text => {
+            socket.emit(id, text)
+          })
+        }
+      }
+      element.addEventListener('contextmenu', contextmenu)
+
+      if (props.motd) {
+        // fetch motd
+        fetchMotd().then(text => {
+          term.write(text)
+          window.dispatchEvent(new Event('resize'))
+        })
+      } else {
+        // connect ssh
+        term.onData(data => {
+          socket.emit(id, data)
+        })
+        socket
+          .on(id, (data: string) => {
+            term.write(data)
+          })
+          .emit('shell', props.config)
       }
 
-      // connect ssh
-      term.onData(data => {
-        socket.emit(id, data)
-      })
-      socket
-        .on(id, (data: string) => {
-          term.write(data)
-        })
-        .on('connected', () => {
-          const resize = new Event('resize')
-          window.dispatchEvent(resize)
-        })
-        .emit('shell', { id, ...config })
+      return () => {
+        element.removeEventListener('contextmenu', contextmenu)
+      }
     }
   }, [])
-  return <div id={tid} />
+  return <div className="terminal" id={tid} />
 }
 
 export default Terminal
