@@ -35,7 +35,7 @@ const connection = (socket: Socket): void => {
         .on('ready', () => {
           ssh.shell(window, (err, stream) => {
             if (err !== undefined) {
-              socket.emit(id, note.error(newline + err.message))
+              socket.emit(id, newline + note.error(err.message))
               ssh.end()
               return
             }
@@ -54,12 +54,12 @@ const connection = (socket: Socket): void => {
         })
         .on('close', () => {
           const message = `Disconnected from ${host}`
-          socket.emit(id, note.info(newline + message))
+          socket.emit(id, newline + note.info(message))
           socket.removeAllListeners(id)
           streams.delete(id)
         })
         .on('error', err => {
-          socket.emit(id, note.error(newline + err.message))
+          socket.emit(id, newline + note.error(err.message))
         })
         .connect(config)
     })
