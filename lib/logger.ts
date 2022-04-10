@@ -9,4 +9,6 @@ const note = new Lognote({
   raw: true
 })
 
-export { logger, note }
+const newline = '\n'
+
+export { logger, note, newline }

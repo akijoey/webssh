@@ -19,6 +19,8 @@ A web based ssh client.
 ## Features
 
 - Password authentication supported.
+- Private key authentication supported.
+- Preference settings supported.
 - Fullscreen terminal supported.
 - $TERM `xterm-256color` supported.
 - Modern browsers supported.

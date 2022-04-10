@@ -2,7 +2,7 @@ import http from 'http'
 import { Server, Socket } from 'socket.io'
 import { Client, ConnectConfig, PseudoTtyOptions, ClientChannel } from 'ssh2'
 
-import { logger, note } from './logger'
+import { logger, note, newline } from './logger'
 
 interface Config extends ConnectConfig {
   id: string
@@ -35,7 +35,7 @@ const connection = (socket: Socket): void => {
         .on('ready', () => {
           ssh.shell(window, (err, stream) => {
             if (err !== undefined) {
-              socket.emit(id, note.error(err.message + '\n'))
+              socket.emit(id, note.error(newline + err.message))
               ssh.end()
               return
             }
@@ -54,12 +54,12 @@ const connection = (socket: Socket): void => {
         })
         .on('close', () => {
           const message = `Disconnected from ${host}`
-          socket.emit(id, note.info(message + '\n'))
+          socket.emit(id, note.info(newline + message))
           socket.removeAllListeners(id)
           streams.delete(id)
         })
         .on('error', err => {
-          socket.emit(id, note.error(err.message + '\n'))
+          socket.emit(id, note.error(newline + err.message))
         })
         .connect(config)
     })
