@@ -31,4 +31,11 @@ const options: ITerminalOptions = {
   }
 }
 
+const breakpoint = 640
+const { offsetWidth } = document.body
+if (offsetWidth <= breakpoint) {
+  const offset = Math.ceil((breakpoint - offsetWidth) / 60)
+  options.fontSize = options.fontSize! - offset
+}
+
 export default options

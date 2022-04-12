@@ -1,6 +1,10 @@
+import { io } from 'socket.io-client'
+
 const baseURL = 'http://localhost:8022'
 
-const fetchMotd = async (): Promise<string> => {
+const socket = io(baseURL)
+
+const motd = async (): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
     fetch(`${baseURL}/motd`)
       .then(res => {
@@ -20,4 +24,4 @@ const fetchMotd = async (): Promise<string> => {
   })
 }
 
-export { baseURL, fetchMotd }
+export { socket, motd }

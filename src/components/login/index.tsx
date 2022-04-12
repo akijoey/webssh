@@ -22,6 +22,9 @@ const Login = (props: Props): ReactElement => {
     auth: 'password'
   }
   const [state, dispatch] = useReducer((state: any, action: any) => {
+    if (action === 'clear') {
+      return initialState
+    }
     const { name, value, files } = action
     return { ...state, [name]: files ? files[0] : value }
   }, initialState)
@@ -41,6 +44,7 @@ const Login = (props: Props): ReactElement => {
       }
     }
     props.onConfirm(config)
+    dispatch('clear')
   }
 
   return (

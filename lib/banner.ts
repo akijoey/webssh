@@ -23,6 +23,8 @@ Click the ${note.blueBright.bold(
   '`Settings`'
 )} button at the top right to edit preferences.
 
+Press ${note.blueBright.bold('`Ctrl+F`')} to search.
+
 ${note.bold('Repository')}: ${note.cyan.underline(repository)}
 ${note.bold('Homepage')}: ${note.cyan.underline(homepage)}
 ${note.bold('Report Bugs')}: ${note.cyan.underline(bugs)}

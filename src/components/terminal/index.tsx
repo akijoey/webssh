@@ -1,12 +1,12 @@
-import React, { ReactElement, useEffect } from 'react'
+import React, { ReactElement, useEffect, useState } from 'react'
 import { Terminal as Term } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { SearchAddon } from 'xterm-addon-search'
 import { WebLinksAddon } from 'xterm-addon-web-links'
-import { io } from 'socket.io-client'
 
+import Search from '@/components/search'
+import { socket, motd } from '@/utils/connect'
 import options from '@/utils/options'
-import { baseURL, fetchMotd } from '@/utils/request'
 
 import 'xterm/css/xterm.css'
 import './index.scss'
@@ -23,7 +23,6 @@ interface Props {
   onInit: (instance: TermInstance) => void
 }
 
-const socket = io(baseURL)
 socket.on('connected', () => {
   window.dispatchEvent(new Event('resize'))
 })
@@ -31,6 +30,10 @@ socket.on('connected', () => {
 const Terminal = (props: Props): ReactElement => {
   const { id } = props.config
   const tid = `terminal-${id}`
+
+  const [visible, setVisible] = useState(false)
+  const [addon, setAddon] = useState(new SearchAddon())
+
   useEffect(() => {
     const element = document.getElementById(tid)
     if (element !== null) {
@@ -41,8 +44,10 @@ const Terminal = (props: Props): ReactElement => {
       term.loadAddon(fitAddon)
       term.loadAddon(searchAddon)
       term.loadAddon(webLinkAddon)
+
       term.open(element)
       fitAddon.fit()
+      setAddon(searchAddon)
 
       // resize listener
       const resize = (): void => {
@@ -72,9 +77,17 @@ const Terminal = (props: Props): ReactElement => {
       }
       element.addEventListener('contextmenu', contextmenu)
 
+      // search listener (ctrl + f)
+      term.onKey(({ domEvent }) => {
+        const { key, ctrlKey } = domEvent
+        if (ctrlKey && key === 'f') {
+          setVisible(true)
+        }
+      })
+
       if (props.motd) {
         // fetch motd
-        fetchMotd().then(text => {
+        motd().then(text => {
           term.write(text)
           window.dispatchEvent(new Event('resize'))
         })
@@ -95,7 +108,17 @@ const Terminal = (props: Props): ReactElement => {
       }
     }
   }, [])
-  return <div className="terminal" id={tid} />
+
+  return (
+    <div className="terminal" id={tid}>
+      <Search
+        tid={tid}
+        visible={visible}
+        addon={addon}
+        onClose={() => setVisible(false)}
+      />
+    </div>
+  )
 }
 
 export default Terminal

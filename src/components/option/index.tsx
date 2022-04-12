@@ -1,4 +1,4 @@
-import React, { ReactElement, useReducer } from 'react'
+import React, { ReactElement, useReducer, ChangeEvent } from 'react'
 import { Button } from '@akijoey/react-components'
 
 import options from '@/utils/options'
@@ -32,8 +32,8 @@ const Option = (props: Props): ReactElement => {
   }, initialState)
   const { cursorBlink, cursorStyle, fontSize, lineHeight, letterSpacing } =
     state
-  const handleChange = (e: React.ChangeEvent): void => {
-    dispatch(e.target)
+  const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    dispatch(event.target)
   }
 
   const handleClick = (): void => {
