@@ -1,7 +1,11 @@
 @import 'mapleaf/dist/mapleaf.css';
 
-.app {
+#root {
   height: 100vh;
+}
+
+.app {
+  height: 100%;
 }
 
 *::-webkit-scrollbar {

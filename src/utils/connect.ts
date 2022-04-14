@@ -10,9 +10,7 @@ const motd = async (): Promise<string> => {
       .then(res => {
         if (res.status === 200) {
           res.text().then(text => {
-            setTimeout(() => {
-              resolve(text)
-            }, 50)
+            resolve(text)
           })
         } else {
           reject(res.statusText)

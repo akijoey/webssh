@@ -36,6 +36,11 @@ const { offsetWidth } = document.body
 if (offsetWidth <= breakpoint) {
   const offset = Math.ceil((breakpoint - offsetWidth) / 60)
   options.fontSize = options.fontSize! - offset
+
+  const root = document.getElementById('root')
+  if (root) {
+    root.style.height = window.innerHeight + 'px'
+  }
 }
 
 export default options

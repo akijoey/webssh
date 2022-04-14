@@ -3,6 +3,7 @@ import { Terminal as Term } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { SearchAddon } from 'xterm-addon-search'
 import { WebLinksAddon } from 'xterm-addon-web-links'
+import { WebFontsAddon } from '@/utils/webfonts'
 
 import Search from '@/components/search'
 import { socket, motd } from '@/utils/connect'
@@ -40,12 +41,17 @@ const Terminal = (props: Props): ReactElement => {
       const term = new Term(options)
       const fitAddon = new FitAddon()
       const searchAddon = new SearchAddon()
-      const webLinkAddon = new WebLinksAddon()
+      const webLinksAddon = new WebLinksAddon()
+      const webFontsAddon = new WebFontsAddon(() => {
+        term.focus()
+      })
+
       term.loadAddon(fitAddon)
       term.loadAddon(searchAddon)
-      term.loadAddon(webLinkAddon)
-
+      term.loadAddon(webLinksAddon)
+      term.loadAddon(webFontsAddon)
       term.open(element)
+
       fitAddon.fit()
       setAddon(searchAddon)
 
