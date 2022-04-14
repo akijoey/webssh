@@ -38,9 +38,11 @@ if (offsetWidth <= breakpoint) {
   options.fontSize = options.fontSize! - offset
 
   const root = document.getElementById('root')
-  if (root) {
-    root.style.height = window.innerHeight + 'px'
-  }
+  window.addEventListener('resize', () => {
+    if (root) {
+      root.style.height = window.innerHeight + 'px'
+    }
+  })
 }
 
 export default options
