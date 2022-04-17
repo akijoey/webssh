@@ -19,7 +19,6 @@ export interface TermInstance {
 }
 
 interface Props {
-  motd?: boolean
   config: { id: string }
   onInit: (instance: TermInstance) => void
 }
@@ -44,6 +43,25 @@ const Terminal = (props: Props): ReactElement => {
       const webLinksAddon = new WebLinksAddon()
       const webFontsAddon = new WebFontsAddon(() => {
         term.focus()
+
+        if (id === 'motd') {
+          // fetch motd
+          motd().then(text => {
+            term.write(text, () => {
+              window.dispatchEvent(new Event('resize'))
+            })
+          })
+        } else {
+          // connect ssh
+          term.onData(data => {
+            socket.emit(id, data)
+          })
+          socket
+            .on(id, (data: string) => {
+              term.write(data)
+            })
+            .emit('shell', props.config)
+        }
       })
 
       term.loadAddon(fitAddon)
@@ -58,7 +76,7 @@ const Terminal = (props: Props): ReactElement => {
       // resize listener
       const resize = (): void => {
         fitAddon.fit()
-        !props.motd &&
+        id !== 'motd' &&
           socket.emit('resize', {
             cols: term.cols,
             rows: term.rows,
@@ -75,7 +93,7 @@ const Terminal = (props: Props): ReactElement => {
         if (term.hasSelection()) {
           clipboard.writeText(term.getSelection())
           term.select(0, 0, 0)
-        } else if (!props.motd) {
+        } else if (id !== 'motd') {
           clipboard.readText().then(text => {
             socket.emit(id, text)
           })
@@ -90,24 +108,6 @@ const Terminal = (props: Props): ReactElement => {
           setVisible(true)
         }
       })
-
-      if (props.motd) {
-        // fetch motd
-        motd().then(text => {
-          term.write(text)
-          window.dispatchEvent(new Event('resize'))
-        })
-      } else {
-        // connect ssh
-        term.onData(data => {
-          socket.emit(id, data)
-        })
-        socket
-          .on(id, (data: string) => {
-            term.write(data)
-          })
-          .emit('shell', props.config)
-      }
 
       return () => {
         element.removeEventListener('contextmenu', contextmenu)

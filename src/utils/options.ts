@@ -31,18 +31,4 @@ const options: ITerminalOptions = {
   }
 }
 
-const breakpoint = 640
-const { offsetWidth } = document.body
-if (offsetWidth <= breakpoint) {
-  const offset = Math.ceil((breakpoint - offsetWidth) / 60)
-  options.fontSize = options.fontSize! - offset
-
-  const root = document.getElementById('root')
-  window.addEventListener('resize', () => {
-    if (root) {
-      root.style.height = window.innerHeight + 'px'
-    }
-  })
-}
-
 export default options
