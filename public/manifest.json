@@ -1,6 +1,7 @@
 {
-  "short_name": "webssh",
   "name": "WebSSH",
+  "short_name": "webssh",
+  "description": "A web based ssh client.",
   "icons": [
     {
       "src": "favicon.ico",
