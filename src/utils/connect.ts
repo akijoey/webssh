@@ -1,12 +1,12 @@
 import { io } from 'socket.io-client'
 
-const baseURL = 'http://localhost:8022'
+const baseURL = '/'
 
 const socket = io(baseURL)
 
 const motd = async (): Promise<string> => {
   return new Promise<string>((resolve, reject) => {
-    fetch(`${baseURL}/motd`)
+    fetch(`${baseURL}motd`)
       .then(res => {
         if (res.status === 200) {
           res.text().then(text => {

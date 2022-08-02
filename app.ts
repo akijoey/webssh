@@ -44,7 +44,7 @@ function serve(): void {
   const server = http.createServer(app.callback())
   createSocket(server)
   // server listen
-  const host = process.env.HOST ?? '127.0.0.1'
+  const host = process.env.HOST ?? '0.0.0.0'
   const port = Number(process.env.PORT ?? 8022)
   server.listen(port, host, () => {
     logger.log(banner)
