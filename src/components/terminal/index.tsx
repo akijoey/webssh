@@ -3,7 +3,7 @@ import { Terminal as Term } from 'xterm'
 import { FitAddon } from 'xterm-addon-fit'
 import { SearchAddon } from 'xterm-addon-search'
 import { WebLinksAddon } from 'xterm-addon-web-links'
-import { WebFontsAddon } from '@/utils/webfonts'
+import { WebFontsAddon } from 'xterm-addon-web-fonts'
 
 import Search from '@/components/search'
 import { socket, motd } from '@/utils/connect'
