@@ -1,4 +1,4 @@
-# webssh
+# WebSSH
 
 [![license][license-image]][license-url]
 
@@ -12,9 +12,25 @@ A web based ssh client.
 +---------+   websocket  +--------+    ssh    +------------+
 ```
 
-## Installation
+## Deploy
+
+Install dependencies.
 
 `$ yarn install --production`
+
+Start service.
+
+`$ yarn serve`
+
+## Docker
+
+Build image.
+
+`$ docker build -t webssh .`
+
+Run container.
+
+`$ docker run -d -p 8022:8022 --name webssh webssh`
 
 ## Features
 
