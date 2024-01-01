@@ -10,7 +10,7 @@ import banner, { motd } from './lib/banner'
 const app = new Koa()
 const router = new Router()
 
-router.get('/motd', async (ctx, next) => {
+router.get('/motd', ctx => {
   ctx.body = banner + motd
 })
 
@@ -46,13 +46,10 @@ function serve(): void {
   // server listen
   const host = process.env.HOST ?? '0.0.0.0'
   const port = Number(process.env.PORT ?? 8022)
+  const url = note.blueBright.underline(`http://${host}:${port}`)
   server.listen(port, host, () => {
     logger.log(banner)
-    logger.info(
-      `Server is running at ${note.blueBright.underline(
-        `http://${host}:${port}`
-      )}`
-    )
+    logger.info(`Server is running at ${url}`)
   })
   // signal handle
   const signals = ['SIGINT', 'SIGTERM']
