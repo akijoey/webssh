@@ -1,7 +1,7 @@
 import Lognote from 'lognote'
 
 const logger = new Lognote({
-  preset: 'datatime'
+  preset: 'datetime'
 })
 
 const note = new Lognote({
